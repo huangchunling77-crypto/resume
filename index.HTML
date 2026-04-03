@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄春玲 - 高级市场洞察专员</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#0f172a', // 深石板蓝
+                        accent: '#2563eb',  // 亮蓝色
+                        surface: '#f8fafc', // 背景色
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        
+        /* 隐藏主滚动条但保留功能 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 案例Tab选中状态 */
+        .case-tab-active {
+            background-color: #2563eb;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+        .case-tab-inactive {
+            background-color: #f1f5f9;
+            color: #64748b;
+        }
+        .case-tab-inactive:hover {
+            background-color: #e2e8f0;
+            color: #334155;
+        }
+    </style>
+</head>
+<body class="bg-surface font-sans text-gray-800 h-screen overflow-hidden flex flex-col selection:bg-accent selection:text-white relative">
+
+    <!-- 背景装饰 -->
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9InBhdHRlcm4iIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMzcsIDk5LCAyMzUsIDAuMDMpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+')] -z-10"></div>
+
+    <!-- 顶部固定导航栏 (Top Navbar) -->
+    <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-200 shadow-sm transition-all">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- 左侧 Logo 与个人信息 -->
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-accent to-blue-600 text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-md">H</div>
+                    <span class="font-extrabold text-xl text-primary tracking-tight">黄春玲</span>
+                    <span class="hidden md:inline-block text-xs font-semibold text-accent bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full ml-2">Senior Market Insights</span>
+                </div>
+
+                <!-- 中间 PC 端导航菜单 -->
+                <nav class="hidden md:flex space-x-2 bg-gray-50/80 p-1 rounded-full border border-gray-100">
+                    <button onclick="switchTab('profile')" id="nav-profile" class="nav-btn px-6 py-2 rounded-full text-sm font-bold transition-all text-accent bg-white shadow-sm">
+                        <i class="fas fa-id-card mr-1"></i> 个人能力
+                    </button>
+                    <button onclick="switchTab('cases')" id="nav-cases" class="nav-btn px-6 py-2 rounded-full text-sm font-medium text-gray-500 hover:text-gray-900 transition-all">
+                        <i class="fas fa-chart-pie mr-1"></i> 作品展现
+                    </button>
+                    <button onclick="switchTab('workflow')" id="nav-workflow" class="nav-btn px-6 py-2 rounded-full text-sm font-medium text-gray-500 hover:text-gray-900 transition-all">
+                        <i class="fas fa-project-diagram mr-1"></i> 调研框架
+                    </button>
+                </nav>
+
+                <!-- 右侧联系方式 -->
+                <div class="hidden md:flex items-center gap-4">
+                    <a href="mailto:huangchuling622@163.com" class="text-gray-500 hover:text-accent transition flex items-center gap-2 text-sm font-medium">
+                        <i class="fas fa-envelope"></i> 
+                        <span class="hidden lg:inline-block">huangchuling622@163.com</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 移动端底部菜单 (针对小屏幕) -->
+            <nav class="md:hidden flex justify-around pb-2 border-t border-gray-100 pt-2 bg-white">
+                <button onclick="switchTab('profile')" id="nav-profile-mob" class="nav-btn-mob flex flex-col items-center gap-1 text-accent font-bold text-xs">
+                    <i class="fas fa-id-card text-base"></i>能力
+                </button>
+                <button onclick="switchTab('cases')" id="nav-cases-mob" class="nav-btn-mob flex flex-col items-center gap-1 text-gray-400 text-xs">
+                    <i class="fas fa-chart-pie text-base"></i>作品
+                </button>
+                <button onclick="switchTab('workflow')" id="nav-workflow-mob" class="nav-btn-mob flex flex-col items-center gap-1 text-gray-400 text-xs">
+                    <i class="fas fa-project-diagram text-base"></i>框架
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主要内容展示区 (Main Content) -->
+    <main id="main-scroll-area" class="flex-1 w-full h-full overflow-y-auto no-scrollbar pt-24 pb-20 scroll-smooth">
+        
+        <!-- ================= 版块 1：个人能力 (重构图文版) ================= -->
+        <section id="tab-profile" class="tab-content block w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-up">
+            
+            <!-- 顶部 Slogan 与简介 -->
+            <div class="mb-16 text-center max-w-4xl mx-auto pt-8">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary leading-tight tracking-tight mb-6">
+                    以高精度的数据洞察，<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-indigo-500">兑现确切的商业增长。</span>
+                </h1>
+                <p class="text-gray-600 text-lg md:text-xl leading-relaxed mb-8">
+                    拥有近4年 3C 与跨境出海赛道经验。我不制造悬浮的“纯理论研报”，而是将隐秘的市场信号，翻译为高胜率的落地策略。
+                </p>
+                <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 text-left inline-block shadow-sm">
+                    <div class="flex items-start gap-4">
+                        <i class="fas fa-robot text-accent text-2xl mt-1 opacity-80"></i>
+                        <p class="text-gray-700 leading-relaxed font-medium">
+                            <strong>AI 已是我的标配生产力底座：</strong>AI 对于我并非探索中的工具，而是深度嵌入标准工作流的核心组件。通过大模型与脚本进行秒级数据清洗与非结构化痛点提炼，我已彻底跨越人工处理数据的低效泥潭，将 80% 的核心精力倾注于高阶商业策略的推演与变现。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心能力图文矩阵 -->
+            <div class="space-y-16 lg:space-y-24 mb-16">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl font-bold text-primary inline-flex items-center gap-3">
+                        <i class="fas fa-layer-group text-accent"></i> 核心能力与业务价值模型
+                    </h2>
+                </div>
+
+                <!-- 能力一：宏观全景 (左文右图) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                    <div class="order-2 lg:order-1">
+                        <div class="w-12 h-12 bg-blue-100 text-accent rounded-xl flex items-center justify-center text-xl mb-6 shadow-sm"><i class="fas fa-globe"></i></div>
+                        <h3 class="text-2xl font-bold text-primary mb-4">全景式宏观大盘研判</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            摒弃经验主义盲猜，通过多维平台数据交叉比对，精准测算品类天花板与竞争烈度。
+                        </p>
+                        <div class="bg-gray-50 border-l-4 border-accent p-5 rounded-r-lg">
+                            <h4 class="font-bold text-gray-800 text-sm mb-2"><i class="fas fa-crosshairs text-accent mr-2"></i>业务价值：解决“去哪打”的战略航向</h4>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                在立项初期拨开数据迷雾，计算真实的赛道规模与竞争红海分布。为业务线指明高增细分蓝海，规避数百万级别的错误研发投资。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2">
+                        <!-- 视觉占位图 -->
+                        <div class="aspect-[4/3] bg-slate-100 rounded-3xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 group hover:border-accent hover:bg-blue-50 transition duration-300 p-6 text-center">
+                            <i class="fas fa-chart-area text-5xl mb-4 group-hover:text-accent transition"></i>
+                            <p class="font-bold text-lg mb-2"></p>
+                            <p class="text-xs">此处建议放置：展示市场规模增速、竞品集中度分析的可视化图表</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 能力二：微观需求 (左图右文) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                    <div class="order-1 lg:order-1">
+                        <!-- 视觉占位图 -->
+                        <div class="aspect-[4/3] bg-slate-100 rounded-3xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 group hover:border-purple-400 hover:bg-purple-50 transition duration-300 p-6 text-center">
+                            <i class="fas fa-comments text-5xl mb-4 group-hover:text-purple-500 transition"></i>
+                            <p class="font-bold text-lg mb-2"></p>
+                            <p class="text-xs">此处建议放置：海量评价提炼出的高频痛点标签、用户场景还原图</p>
+                        </div>
+                    </div>
+                    <div class="order-2 lg:order-2">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-6 shadow-sm"><i class="fas fa-microscope"></i></div>
+                        <h3 class="text-2xl font-bold text-primary mb-4">微观隐性需求解构</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            穿透表层销量，深挖海量热搜词脉络与 VOC 底色。提前半步捕捉用户在特定场景、色彩或功能上的隐性渴求。
+                        </p>
+                        <div class="bg-gray-50 border-l-4 border-purple-500 p-5 rounded-r-lg">
+                            <h4 class="font-bold text-gray-800 text-sm mb-2"><i class="fas fa-crosshairs text-purple-500 mr-2"></i>业务价值：解决“怎么打”的战术弹药</h4>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                将模糊杂乱的用户声音，转化为精确的“痛点改良清单”与“功能增量需求”，指导产品线进行具有高确定性的微创新与迭代。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 能力三：策略变现 (左文右图) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                    <div class="order-2 lg:order-1">
+                        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl mb-6 shadow-sm"><i class="fas fa-bullseye"></i></div>
+                        <h3 class="text-2xl font-bold text-primary mb-4">洞察策略的敏捷变现</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            拒绝只抛弃问题不解决问题。能够深刻理解业务痛点，将繁杂的数据精准“翻译”为一线执行的业务语言。
+                        </p>
+                        <div class="bg-gray-50 border-l-4 border-orange-500 p-5 rounded-r-lg">
+                            <h4 class="font-bold text-gray-800 text-sm mb-2"><i class="fas fa-crosshairs text-orange-500 mr-2"></i>业务价值：打通落地的“最后一公里”</h4>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                输出包含“硬件参数建议”、“切入定价模型”、“本土化营销卖点”等可执行的 PRD（产品需求文档）级建议，确保洞察直接触发生意动作。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2">
+                        <!-- 视觉占位图 -->
+                        <div class="aspect-[4/3] bg-slate-100 rounded-3xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 group hover:border-orange-400 hover:bg-orange-50 transition duration-300 p-6 text-center">
+                            <i class="fas fa-file-invoice text-5xl mb-4 group-hover:text-orange-500 transition"></i>
+                            <p class="font-bold text-lg mb-2"></p>
+                            <p class="text-xs">此处建议放置：包含定价区间、核心卖点提炼的总结性业务文档截图</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 跳转按钮 -->
+            <div class="text-center mt-16 pb-16">
+                <button onclick="switchTab('cases')" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-bold hover:bg-accent transition shadow-xl hover:shadow-2xl">
+                    进入作品展现：查看完整落地案例 <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 版块 2：作品展现 (含内页Tab切换) ================= -->
+        <section id="tab-cases" class="tab-content hidden w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 案例板块子导航 -->
+            <div class="flex justify-center mb-10">
+                <div class="bg-gray-100 p-1.5 rounded-full inline-flex shadow-inner">
+                    <button onclick="switchCase('case1')" id="btn-case1" class="case-tab-active px-6 py-2.5 rounded-full text-sm transition-all duration-300">
+                        案例一：拉美大功率音箱破局
+                    </button>
+                    <button onclick="switchCase('case2')" id="btn-case2" class="case-tab-inactive px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300">
+                        案例二：[待定项目名称]
+                    </button>
+                </div>
+            </div>
+
+            <!-- 案例一：拉美音箱 -->
+            <div id="case-content-1" class="case-content-block block fade-in-up">
+                <div class="mb-10 text-center">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-primary mb-3">拉美大功率 Party 音箱机会挖掘与产品定义</h2>
+                    <p class="text-gray-500">从数据异动到新品成功立项的完整推演闭环</p>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- S & T 模块 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col">
+                            <h3 class="text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                                <span class="w-8 h-8 rounded bg-gray-100 flex items-center justify-center font-black text-gray-500">S</span> 商业挑战
+                            </h3>
+                            <p class="text-gray-600 mb-6 flex-1">公司音频品牌在拉美便携音箱市场遇增长瓶颈，面对竞争激烈的 Party 音箱红海，亟需寻找<strong>高潜力、低竞争</strong>的第二增长曲线。</p>
+                            <!-- 预留占位图 -->
+                            <div class="w-full h-40 bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center text-slate-400 hover:bg-gray-100 transition">
+                                <span class="text-sm font-bold"><i class="fas fa-image mr-1"></i> </span>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50/50 p-8 rounded-3xl border border-blue-100 shadow-sm flex flex-col">
+                            <h3 class="text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                                <span class="w-8 h-8 rounded bg-blue-100 flex items-center justify-center font-black text-accent">T</span> 洞察目标
+                            </h3>
+                            <p class="text-gray-600 mb-6 flex-1">穿透大盘销量表象，利用漏斗筛选出极具确定性的<strong>蓝海切入点</strong>，并输出精确到参数与定价的“产品图纸”。</p>
+                            <!-- 预留占位图 -->
+                            <div class="w-full h-40 bg-white border-2 border-dashed border-blue-200 rounded-xl flex items-center justify-center text-blue-400 hover:bg-blue-50 transition">
+                                <span class="text-sm font-bold"><i class="fas fa-project-diagram mr-1"></i> </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- A 行动模块 -->
+                    <div class="bg-white p-8 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
+                        <h3 class="text-2xl font-bold text-primary mb-8 flex items-center gap-2">
+                            <span class="w-10 h-10 rounded bg-primary text-white flex items-center justify-center font-black text-lg">A</span> 多维漏斗推演策略
+                        </h3>
+
+                        <!-- 步骤1 -->
+                        <div class="mb-10 pb-10 border-b border-gray-100">
+                            <div class="flex flex-col md:flex-row gap-6 items-center">
+                                <div class="w-full md:w-1/2">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-3"><span class="text-accent mr-2">01.</span>锁定成长期赛道</h4>
+                                    <p class="text-gray-600 mb-4">扫描整个音箱大盘，发现“立式手柄”细分赛道脱颖而出，以 <strong>64% 的预计增速</strong>成为绝对高增赛道。</p>
+                                </div>
+                                <div class="w-full md:w-1/2 h-48 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center text-slate-400 hover:border-accent hover:text-accent transition">
+                                    <span class="text-sm font-bold text-center px-4"><i class="fas fa-chart-line text-2xl mb-2 block"></i> </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 步骤2 -->
+                        <div class="mb-10 pb-10 border-b border-gray-100">
+                            <div class="flex flex-col md:flex-row gap-6 items-center">
+                                <div class="w-full md:w-1/2">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-3"><span class="text-indigo-500 mr-2">02.</span>圈定竞争白区</h4>
+                                    <p class="text-gray-600 mb-4">对标头部玩家，绘制功率与价格散点图，敏锐发现在 <strong>50W-120W</strong> 且支持支架的中大型尺寸上，存在明显的竞品真空期。</p>
+                                </div>
+                                <div class="w-full md:w-1/2 h-48 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center text-slate-400 hover:border-indigo-500 hover:text-indigo-500 transition">
+                                    <span class="text-sm font-bold text-center px-4"><i class="fas fa-chart-scatter text-2xl mb-2 block"></i> </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 步骤3 -->
+                        <div>
+                            <div class="flex flex-col md:flex-row gap-6 items-center">
+                                <div class="w-full md:w-1/2">
+                                    <h4 class="text-lg font-bold text-gray-800 mb-3"><span class="text-purple-500 mr-2">03.</span>锁定核心痛点</h4>
+                                    <p class="text-gray-600 mb-4">通过抓取热搜词与差评语义分析，发现当地用户强烈不满现有产品的“音质差”、“无LED控制”、“支架脆弱”。</p>
+                                </div>
+                                <div class="w-full md:w-1/2 h-48 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center text-slate-400 hover:border-purple-500 hover:text-purple-500 transition">
+                                    <span class="text-sm font-bold text-center px-4"><i class="fas fa-cloud text-2xl mb-2 block"></i> </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- R 结果模块 -->
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 md:p-10 rounded-3xl shadow-xl">
+                        <div class="flex flex-col md:flex-row gap-8 items-center">
+                            <div class="w-full md:w-1/2">
+                                <h3 class="text-2xl font-bold text-yellow-400 mb-6 flex items-center gap-2">
+                                    <span class="w-10 h-10 rounded bg-yellow-400 text-slate-900 flex items-center justify-center font-black text-lg">R</span> 最终输出与变现
+                                </h3>
+                                <ul class="space-y-4 mb-6">
+                                    <li class="flex items-start gap-3"><i class="fas fa-check-circle text-green-400 mt-1"></i> 输出精确产品定义：15寸大喇叭 / 50-120W / 沉浸式LED</li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-check-circle text-green-400 mt-1"></i> 锚定 1600-2500 MXN 的高胜率定价区间</li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-trophy text-yellow-400 mt-1"></i> <strong>极具说服力的数据打动业务线，成功推动潜力新品立项落地！</strong></li>
+                                </ul>
+                            </div>
+                            <div class="w-full md:w-1/2 h-64 bg-slate-800 border-2 border-dashed border-slate-600 rounded-2xl flex items-center justify-center text-slate-400 hover:border-yellow-400 hover:text-yellow-400 transition">
+                                <span class="text-sm font-bold text-center px-4"><i class="fas fa-file-powerpoint text-3xl mb-2 block"></i> </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 案例二：空白模板 (初始隐藏) -->
+            <div id="case-content-2" class="case-content-block hidden fade-in-up">
+                <div class="mb-10 text-center">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-primary mb-3">[这里填写案例二的核心项目名称]</h2>
+                    <p class="text-gray-500">[这里填写一句话的项目价值描述]</p>
+                </div>
+
+                <div class="space-y-8 opacity-80">
+                    <!-- S & T 占位 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-8 rounded-3xl border border-gray-100 border-dashed shadow-sm">
+                            <h3 class="text-xl font-bold text-primary mb-4">S - 商业挑战</h3>
+                            <p class="text-gray-400 mb-6 text-sm">[此处等待填充：当时的业务背景是什么？遇到了什么困境？]</p>
+                            <div class="w-full h-32 bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center text-gray-400">
+                                <span class="text-xs">[Image Placeholder]</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-8 rounded-3xl border border-gray-100 border-dashed shadow-sm">
+                            <h3 class="text-xl font-bold text-primary mb-4">T - 洞察目标</h3>
+                            <p class="text-gray-400 mb-6 text-sm">[此处等待填充：你需要通过调研达成什么业务目标？]</p>
+                            <div class="w-full h-32 bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center text-gray-400">
+                                <span class="text-xs">[Image Placeholder]</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- A 占位 -->
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 border-dashed shadow-sm">
+                        <h3 class="text-2xl font-bold text-primary mb-6">A - 行动与推演过程</h3>
+                        <p class="text-gray-400 mb-6 text-sm">[此处等待填充：你采取了哪几个关键的分析步骤？]</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="h-40 bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center text-gray-400"><span class="text-xs">[图表占位 1]</span></div>
+                            <div class="h-40 bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center text-gray-400"><span class="text-xs">[图表占位 2]</span></div>
+                            <div class="h-40 bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center text-gray-400"><span class="text-xs">[图表占位 3]</span></div>
+                        </div>
+                    </div>
+
+                    <!-- R 占位 -->
+                    <div class="bg-gray-50 p-8 rounded-3xl border border-gray-200 border-dashed">
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">R - 最终商业结果</h3>
+                        <p class="text-gray-400 mb-6 text-sm">[此处等待填充：最终输出了什么结论？推动了什么业务进展？]</p>
+                        <div class="w-full h-48 bg-white border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center text-gray-400">
+                            <span class="text-xs">[Image Placeholder - 结果证明图]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pb-20"></div>
+        </section>
+        
+        <!-- ================= 版块 3：调研框架 (AI SOP 增加占位图) ================= -->
+        <section id="tab-workflow" class="tab-content hidden w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center fade-in-up pt-8">
+                <span class="bg-teal-100 text-teal-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4 inline-block tracking-wider uppercase">效率革命篇</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-primary mb-4 leading-tight">AI 赋能的市场调研工作流</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">不单纯依靠人力搬运数据，而是构建一套高敏捷、自动化的情报处理系统，跨越数据清洗的“体力活”瓶颈。</p>
+            </div>
+
+            <!-- 标准化 SOP 管道 (Pipeline 增加占位图) -->
+            <div class="bg-white rounded-[2rem] p-8 md:p-12 border border-gray-100 shadow-sm fade-in-up delay-100">
+                
+                <div class="space-y-16 relative">
+                    <!-- 步骤 1 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                        <div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg shadow-sm">1</div>
+                                <h3 class="text-xl font-bold text-gray-800">全域数据结构化采集</h3>
+                            </div>
+                            <p class="text-gray-600 leading-relaxed mb-4">运用八爪鱼、卖家精灵等工具，结构化导出大盘与竞品的原始海量数据，形成初阶数据池。</p>
+                        </div>
+                        <div class="h-48 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center text-slate-400 hover:border-blue-400 transition">
+                            <span class="text-sm font-bold text-center px-4"><i class="fas fa-table text-2xl mb-2 block"></i> </span>
+                        </div>
+                    </div>
+
+                    <!-- 步骤 2 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                        <div class="order-2 md:order-1 h-48 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center text-slate-400 hover:border-teal-400 transition">
+                            <span class="text-sm font-bold text-center px-4"><i class="fas fa-terminal text-2xl mb-2 block"></i> </span>
+                        </div>
+                        <div class="order-1 md:order-2">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-lg shadow-sm">2</div>
+                                <h3 class="text-xl font-bold text-gray-800">大模型自动化清洗打标</h3>
+                            </div>
+                            <p class="text-gray-600 leading-relaxed mb-4">利用大模型(如GPT/Claude)编写 Prompt，将十万级乱码或长文本转化为标准化标签分类，秒级完成人工需要数天的任务。</p>
+                        </div>
+                    </div>
+
+                    <!-- 步骤 3 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                        <div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-lg shadow-sm">3</div>
+                                <h3 class="text-xl font-bold text-gray-800">飞书自动化协同交付</h3>
+                            </div>
+                            <p class="text-gray-600 leading-relaxed mb-4">摒弃本地 Excel 传输。将提炼的洞察与执行建议以结构化文档的形式接入飞书，供产品和运营团队随时检索调用。</p>
+                        </div>
+                        <div class="h-48 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-center text-slate-400 hover:border-purple-400 transition">
+                            <span class="text-sm font-bold text-center px-4"><i class="fas fa-share-nodes text-2xl mb-2 block"></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pb-24"></div>
+        </section>
+
+    </main>
+
+    <!-- 交互脚本 -->
+    <script>
+        // 主导航切换逻辑
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('fade-in-up'); 
+            });
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('text-accent', 'bg-white', 'shadow-sm', 'font-bold');
+                el.classList.add('text-gray-500', 'font-medium');
+            });
+            document.querySelectorAll('.nav-btn-mob').forEach(el => {
+                el.classList.remove('text-accent', 'font-bold');
+                el.classList.add('text-gray-400');
+            });
+
+            const targetSec = document.getElementById('tab-' + tabId);
+            targetSec.classList.remove('hidden');
+            void targetSec.offsetWidth; 
+            targetSec.classList.add('fade-in-up');
+
+            const targetBtn = document.getElementById('nav-' + tabId);
+            if(targetBtn) {
+                targetBtn.classList.remove('text-gray-500', 'font-medium');
+                targetBtn.classList.add('text-accent', 'bg-white', 'shadow-sm', 'font-bold');
+            }
+            const targetBtnMob = document.getElementById('nav-' + tabId + '-mob');
+            if(targetBtnMob) {
+                targetBtnMob.classList.remove('text-gray-400');
+                targetBtnMob.classList.add('text-accent', 'font-bold');
+            }
+
+            const scrollArea = document.getElementById('main-scroll-area');
+            if (scrollArea) {
+                scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // 案例内页切换逻辑
+        function switchCase(caseId) {
+            // 隐藏所有案例内容
+            document.querySelectorAll('.case-content-block').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('fade-in-up');
+            });
+            
+            // 重置所有按钮样式
+            document.getElementById('btn-case1').className = 'case-tab-inactive px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300';
+            document.getElementById('btn-case2').className = 'case-tab-inactive px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300';
+            
+            // 显示选中内容并激活按钮
+            const targetContent = document.getElementById('case-content-' + caseId.replace('case', ''));
+            targetContent.classList.remove('hidden');
+            void targetContent.offsetWidth;
+            targetContent.classList.add('fade-in-up');
+            
+            document.getElementById('btn-' + caseId).className = 'case-tab-active px-6 py-2.5 rounded-full text-sm transition-all duration-300';
+        }
+    </script>
+</body>
+</html>
