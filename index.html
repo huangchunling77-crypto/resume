@@ -123,7 +123,7 @@
                         </div>
                         <!-- 右侧雷达图实景嵌入 -->
                         <div class="w-full md:w-64 h-48 bg-white border border-slate-100 rounded-xl flex flex-col items-center justify-center shrink-0 p-2 shadow-sm hover:border-accent transition overflow-hidden">
-                            <img src="image_dc1c48.png" alt="个人能力雷达图" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500">
+                            <img src="image_dc1c48.png" alt="个人能力雷达图" class="w-full h-full object-contain hover:scale-105 transition-transform duration-500" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23f1f5f9\'/><text x=\'50\' y=\'50\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2394a3b8\' font-size=\'12\'>雷达图</text></svg>'">
                         </div>
                     </div>
                 </div>
@@ -355,39 +355,10 @@
                             <div class="flex gap-4 flex-1 w-full">
                                 <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold shrink-0">5</div>
                                 <div class="flex-1">
-                                    <h3 class="text-xl font-bold text-gray-800 mb-2">看需求：搜索词溯源与 VOC 穿透</h3>
-                                    <p class="text-base text-gray-600 leading-relaxed"><strong>搜索词</strong>：将站内海量搜索词按“品牌/功能/人群”自动化打标，锁定需求演变；<strong>看 VOC</strong>：深度透视海量评价，精准还原<strong>人群特征、高频场景、核心痛点与未满足点</strong>。</p>
-                                </div>
-                            </div>
-                            <!-- 右侧双图分栏 -->
-                            <div class="w-full lg:w-[28rem] grid grid-cols-2 gap-4 shrink-0 mt-4 lg:mt-0">
-                                <div class="flex flex-col gap-2">
-                                    <div class="w-full h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center text-slate-400 hover:border-purple-400 transition p-2">
-                                        <i class="fas fa-search mb-1 opacity-50"></i>
-                                        <span class="text-[10px] font-bold text-center leading-tight mt-1">[图片占位符]</span>
-                                    </div>
-                                    <p class="text-[11px] text-gray-500 font-medium text-center">图1：功能搜索词分类打标</p>
-                                </div>
-                                <div class="flex flex-col gap-2">
-                                    <div class="w-full h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center text-slate-400 hover:border-purple-400 transition p-2">
-                                        <i class="fas fa-exclamation-triangle mb-1 opacity-50"></i>
-                                        <span class="text-[10px] font-bold text-center leading-tight mt-1">[图片占位符]</span>
-                                    </div>
-                                    <p class="text-[11px] text-gray-500 font-medium text-center">图2：VOC 痛点与场景归纳</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 思路点 6 -->
-                        <div class="flex flex-col lg:flex-row gap-6 items-center bg-purple-50/30 p-6 rounded-2xl border border-purple-100 hover:bg-white hover:shadow-md transition">
-                            <div class="flex gap-4 flex-1 w-full">
-                                <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold shrink-0">6</div>
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-bold text-gray-800 mb-3">更多拓展分析</h3>
+                                    <h3 class="text-xl font-bold text-gray-800 mb-3">看需求：搜索词溯源与 VOC 穿透</h3>
                                     <ul class="text-base text-gray-600 leading-relaxed list-disc pl-5 marker:text-purple-400 space-y-2">
-                                        <li><strong>竞品分析</strong>：构建产品矩阵图，洞悉其发展路线，寻找对标竞品的软肋；</li>
-                                        <li><strong>站外分析</strong>：追踪核心竞对在<strong>社媒、论坛的引流动作与舆情声量</strong>，补全全域视野；</li>
-                                        <li class="tracking-widest text-purple-400/60 font-bold mt-1">.......</li>
+                                        <li><strong>搜索词</strong>：将站内海量搜索词按“品牌/功能/人群”自动化打标，锁定需求演变；</li>
+                                        <li><strong>看 VOC</strong>：深度透视海量评价，精准还原<strong>人群特征、高频场景、核心痛点与未满足点</strong>。</li>
                                     </ul>
                                 </div>
                             </div>
@@ -427,7 +398,7 @@
         <section id="tab-cases" class="tab-content hidden w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- 案例板块子导航 -->
-            <div class="flex justify-center mb-10">
+            <div class="flex justify-center mb-10 pt-8">
                 <div class="bg-gray-100 p-1.5 rounded-full inline-flex shadow-inner">
                     <button onclick="switchCase('case1')" id="btn-case1" class="case-tab-active px-6 py-2.5 rounded-full text-sm transition-all duration-300">
                         案例一：拉美大功率音箱破局
@@ -669,7 +640,7 @@
                                 <ul class="space-y-4 mb-6">
                                     <li class="flex items-start gap-3"><i class="fas fa-times-circle text-red-400 mt-1"></i> <span class="text-gray-700"><strong>做减法：</strong>建议削减 144/165Hz 入门款及 1080p+超高刷产品的投入。</span></li>
                                     <li class="flex items-start gap-3"><i class="fas fa-check-circle text-accent mt-1"></i> <span class="text-gray-700"><strong>找增量：</strong>明确 <strong>180Hz+2K</strong> 的主力布局地位，并提示 32寸、4K、OLED 作为产品高端化的升级方向。</span></li>
-                                    <li class="flex items-start gap-3"><i class="fas fa-trophy text-orange-500 mt-1"></i> <strong class="text-gray-800">价格机会定位：参数价格内卷，€180以下产品增长明显，OLED、240Hz等高端配置走性价比区间€200-350可能存在一定机会！</strong></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-trophy text-orange-500 mt-1"></i> <span class="text-gray-700"><strong class="text-gray-800">价格机会定位：</strong>参数价格内卷，€180以下产品增长明显，OLED、240Hz等高端配置走性价比区间€200-350可能存在一定机会！</span></li>
                                 </ul>
                             </div>
                             <div class="w-full md:w-1/2 h-64 bg-white border-2 border-dashed border-blue-200 rounded-2xl flex items-center justify-center text-blue-400 hover:bg-blue-50 transition">
